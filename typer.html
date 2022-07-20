@@ -6,6 +6,9 @@
 
     <script type="text/javascript">
 	  
+
+
+
 var conversion = {
 "`":"\u200C",
 "-":"ـ",
@@ -59,7 +62,7 @@ var conversion = {
 "y":"ی",
 "E":"ے",
 "Y":"ۍ",
-"'y":"ئ",
+"y'":"ئ",
 
 "t`h":"\u062A\u0647",
 "d`h":"\u062F\u0647",
@@ -89,8 +92,157 @@ var conversion = {
 "7":"۷",
 "8":"۸",
 "9":"۹",
+};
 
-        };
+var conversion2 = {
+"ـ":"\u200C",
+
+"ا":"[alif]",
+
+"با":"bā",
+"پا":"pā",
+"تا":"tā",
+"ټا":"ṭā",
+"ثا":"sā",
+"جا":"jā",
+"چا":"čā",
+"حا":"hā",
+"خا":"xā",
+"څا":"tsā",
+"ځا":"dzā",
+"دا":"dā",
+"ډا":"ḍā",
+"ذا":"zā",
+"را":"rā",
+"ړا":"ṛā",
+"زا":"zā",
+"ژا":"žā",
+"ږا":"ǵā",
+"سا":"sā",
+"شا":"šā",
+"ښا":"x̌ā",
+"صا":"sā",
+"ضا":"zā",
+"طا":"tā",
+"ظا":"zā",
+"عا":"‌ā",
+"غا":"ğā",
+"فا":"fā",
+"قا":"qā",
+"کا":"kā",
+"ګا":"gā",
+"گا":"gā",
+"لا":"lā",
+"ما":"mā",
+"نا":"nā",
+"ڼا":"ṇā",
+"وا":"wā",
+"ها":"hā",
+"یا":"yā",
+
+"ُو":"o",
+"ِی":"i",
+"َه":"a",
+"ٙۀ":"ə",
+
+"او":"o",
+"ای":"i",
+
+"اَ":"a",
+"اِ":"i",
+"اُ":"u",
+
+
+
+
+"آ":"ā",
+"ب":"b",
+"پ":"p",
+"ت":"t",
+"ټ":"ṭ",
+"ث":"s",
+"ج":"j",
+"چ":"č",
+"ح":"h",
+"خ":"x",
+"څ":"ts",
+"ځ":"dz",
+"د":"d",
+"ډ":"ḍ",
+"ذ":"z",
+"ر":"r",
+"ړ":"ṛ",
+"ز":"z",
+"ژ":"ž",
+"ږ":"ǵ",
+"س":"s",
+"ش":"š",
+"ښ":"x̌",
+"ص":"s",
+"ض":"z",
+"ط":"t",
+"ظ":"z",
+"ع":"\u200C",
+"غ":"ğ",
+"ف":"f",
+"ق":"q",
+"ک":"k",
+"ګ":"g",
+"گ":"g",
+"ل":"l",
+"م":"m",
+"ن":"n",
+"ڼ":"ṇ",
+"و":"w", // vowels
+"ه":"h", // final -a
+"ۀ":"ə",
+"ي":"i",
+"ې":"e",
+"ی":"y",
+"ے":"ay",
+"ۍ":"əy",
+"ئ":"əy",
+"ئي":"yi",
+"َ":"a",
+"ِ":"i",
+"ُ":"u",
+"ٙ":"ə",
+
+
+"َا":"ā",
+
+"":"",
+"":"",
+"":"",
+"":"",
+"":"",
+"":"",
+"":"",
+"":"",
+"":"",
+"":"",
+
+
+
+"،":"\u002c",
+"؛":";",
+"؟":"?",
+"۰":"0",
+"۱":"1",
+"۲":"2",
+"۳":"3",
+"۴":"4",
+"۵":"5",
+"۶":"6",
+"۷":"7",
+"۸":"8",
+"۹":"9",
+
+
+};
+
+
+
 
  var maxLength = Object.keys(conversion)
     .reduce((a, b) => a.length > b.length ? a : b) // get the longest word
@@ -121,12 +273,57 @@ var conversion = {
     return converted
   }
 
-  function onInputTextChange(txt) {
+
+
+
+ var maxLength2 = Object.keys(conversion2)
+    .reduce((a, b) => a.length > b.length ? a : b) // get the longest word
+    .length; // and it's length
+  
+  function convert2 (text) {
+    var converted2 = "";
+    var cur2 = 0;
+    while (cur2 < text.length) {
+      var testedPhoneme2;
+      var symbol2 = undefined;
+      for (var length = maxLength2; length > 0; length --) {
+        testedPhoneme2 = text.substr(cur2, length);
+        if (conversion2[testedPhoneme2]) {
+          symbol2 = conversion2[testedPhoneme2];
+          break; // stop the loop
+        }
+      }
+      if (symbol2) {
+        converted2 += symbol2;
+        cur2 += testedPhoneme2.length;
+      }
+      else {
+        converted2 += text[cur2]
+        cur2++;
+      }
+    }
+    return converted2
+  }
+
+
+
+
+  function onInputTextChange() {
+    var txt = document.getElementById("input_textarea").value // added this
     var outputTextareaElem = document.getElementById("output_textarea");
     var div = document.createElement("div");
     var outputHtmlEntities = convert(txt);
     div.innerHTML = outputHtmlEntities;
     outputTextareaElem.value = div.innerText;
+  }
+
+  function onOutputTextChange() {
+    var txt = document.getElementById("output_textarea").value // added this
+    var outputTextareaElem2 = document.getElementById("output_textarea2");
+    var div = document.createElement("div");
+    var outputHtmlEntities2 = convert2(txt);
+    div.innerHTML = outputHtmlEntities2;
+    outputTextareaElem2.value = div.innerText;
   }
 
 
@@ -139,6 +336,13 @@ var conversion = {
           var copyText = document.getElementById("output_textarea");
           copyText.select();
           copyText.setSelectionRange(0, 99999)
+          document.execCommand("copy");
+        }
+
+        function copytext2() {
+          var copyText2 = document.getElementById("output_textarea2");
+          copyText2.select();
+          copyText2.setSelectionRange(0, 99999)
           document.execCommand("copy");
         }
 
@@ -177,7 +381,7 @@ td, th {
   padding: 3px;
   background-color: #eee;
   border-radius: 5px;
-  font-family: noto sans arabic;
+  font-family: vazirmatn;
 }
 </style>
 
@@ -206,7 +410,9 @@ td, th {
 <tbody>
 <tr>
 <td>
-<textarea style="line-height:1.3; width:95%;font-family:noto sans arabic;font-size:1.4rem; padding:6px" rows="7" dir="rtl" placeholder="output" id="output_textarea"></textarea>  
+<textarea oninput="onOutputTextChange()" style="line-height:1.3; width:95%;font-family:noto sans arabic;font-size:1.4rem; padding:6px" rows="7" dir="rtl" placeholder="output" 
+ id="output_textarea"
+></textarea>  
 </td>
 <td>
 <textarea
@@ -214,8 +420,8 @@ id="input_textarea"
 autofocus=""
 placeholder="Input text here"
 rows="10"
-oninput="onInputTextChange(this.value)"
-style="font-size:1.2rem;font-family:Arial;width:96%;"></textarea>
+style="font-size:1.2rem;font-family:Arial;width:96%;"
+oninput="onInputTextChange();onOutputTextChange()"></textarea>
   
 </td>
 <td>
@@ -516,7 +722,9 @@ style="font-size:1.2rem;font-family:Arial;width:96%;"></textarea>
 </tbody>
 </table>
 	<br>
-	<p style="font-size:1.5rem">ḍ ṭ ṇ ṛ ǵ x̌ ā ə í é ú ó ә́ á ā́</p> 
+<button onclick="copytext2()">Copy text</button><br>
+	<textarea id="output_textarea2" style="width:500px;font-size:1.2rem;font-family:Arial;" rows="5" ></textarea>
+	<p style="font-size:1.5rem">č ž š ḍ ṭ ṇ ṛ ǵ x̌ ā ə í é ú ó ә́ á ā́</p> 
 </center>
 </body>
 </html>
